@@ -1,6 +1,6 @@
 <div align="center">
     <h1>Configure oh-my-zsh</h1>
-    <p>Automating the configuration of oh-my-zsh</p>
+    <p>Automate the configuration of oh-my-zsh with nice plugins and the agnoster theme.</p>
 </div>
 
 ---
