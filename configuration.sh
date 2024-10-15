@@ -7,8 +7,8 @@ command -v git >/dev/null 2>&1 || { echo >&2 "git is not installed. Please insta
 
 # Install plugins zsh-autosuggestions and zsh-syntax-highlighting
 install_plugin() {
-  local repo_url=\$1
-  local target_dir=\$2
+  local repo_url=$1
+  local target_dir=$2
 
   if [ ! -d "$target_dir" ]; then
     git clone "$repo_url" "$target_dir" || { echo "Failed to clone $repo_url"; exit 1; }
