@@ -5,7 +5,7 @@ set -e
 # Check if necessary commands exist
 command -v git >/dev/null 2>&1 || { echo >&2 "git is not installed. Please install git first."; exit 1; }
 
-# Install plugins
+# Install plugins zsh-autosuggestions and zsh-syntax-highlighting
 install_plugin() {
   local repo_url=$1
   local target_dir=$2
