@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# Before running this shell script, make sure you have zsh and oh-my-zsh installed!
+
 set -e
 
 # Check if necessary commands exist
