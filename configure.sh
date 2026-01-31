@@ -33,6 +33,39 @@ else
   touch "$zshrc_file"
 fi
 
-# 4. Update Plugins List (Cross-platform compatible)
+# 4. Update Plugins List
+# Using a temp variable to hold the new block to avoid quoting hell
+NEW_PLUGINS=$(cat <<EOF
+plugins=(
+	git
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
+EOF
+)
+
 if grep -q "plugins=(" "$zshrc_file"; then
-  echo "
+  echo "Updating plugins section in .zshrc..."
+  # Perl handles the multi-line replacement reliably on both macOS and Linux
+  perl -i -0777 -pe "s/plugins=\(.*?\)/$NEW_PLUGINS/gs" "$zshrc_file"
+else
+  echo "Plugins section not found, appending to file..."
+  echo -e "\n$NEW_PLUGINS" >> "$zshrc_file"
+fi
+
+# 5. Install Powerline Fonts
+if [ ! -d "fonts" ]; then
+  echo "Cloning Powerline fonts..."
+  git clone https://github.com/powerline/fonts.git --depth=1 || { echo "Failed to clone fonts"; exit 1; }
+fi
+./fonts/install.sh || { echo "Failed to install fonts"; exit 1; }
+rm -rf fonts
+
+# 6. Update ZSH_THEME
+if grep -q "^ZSH_THEME=" "$zshrc_file"; then
+  echo "Updating theme to 'agnoster'..."
+  perl -i -pe 's/^ZSH_THEME=.*/ZSH_THEME="agnoster"/' "$zshrc_file"
+else
+  echo "Adding ZSH_THEME setting..."
+  echo 'ZSH_THEME="agnoster"' >> "$zshrc_file"
+fi
