@@ -14,9 +14,9 @@
 git clone https://github.com/islgl/configure-ohmyzsh.git
 cd configure-ohmyzsh
 
-chmod +x configuration.sh
+chmod +x configure.sh
 
-./configuration.sh
+./configure.sh
 
 source ~/.zshrc
 ```
