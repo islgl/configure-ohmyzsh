@@ -33,13 +33,12 @@ else
   touch "$zshrc_file"
 fi
 
-# 4. Update Plugins List (Cross-platform safe)
-# Define the new plugins block using a variable to avoid syntax errors
+# 4. Update Plugins List
+# Define the new plugins block
 NEW_PLUGINS="plugins=(git zsh-autosuggestions zsh-syntax-highlighting)"
 
 if grep -q "plugins=(" "$zshrc_file"; then
   echo "Updating plugins section..."
-  # Use Perl to replace the plugins block (handles multi-line matching)
   perl -i -0777 -pe "s/plugins=\(.*?(\n\s*)*?\)/$NEW_PLUGINS/gs" "$zshrc_file"
 else
   echo "Plugins section not found, appending..."
@@ -53,9 +52,9 @@ if [ ! -d "fonts" ]; then
 fi
 ./fonts/install.sh || { echo "Failed to install fonts"; exit 1; }
 rm -rf fonts
+echo "Font installation directory cleaned up."
 
-# 6. Update ZSH_THEME in .zshrc
-# Using Perl here is safer than sed for macOS/Linux compatibility
+# 6. Update ZSH_THEME
 if grep -q "^ZSH_THEME=" "$zshrc_file"; then
   echo "Found ZSH_THEME, updating to agnoster..."
   perl -i -pe 's/^ZSH_THEME=.*/ZSH_THEME="agnoster"/' "$zshrc_file"
@@ -63,12 +62,10 @@ else
   echo "ZSH_THEME not found, adding setting..."
   echo 'ZSH_THEME="agnoster"' >> "$zshrc_file"
 fi
-echo "Theme configuration in .zshrc updated."
 
-# 7. Modify the actual Agnoster Theme File (Your Custom Logic)
+# 7. Modify the Agnoster Theme File
 theme_file="$HOME/.oh-my-zsh/themes/agnoster.zsh-theme"
 
-# Backup the theme file
 if [ -f "$theme_file" ]; then
   cp "$theme_file" "${theme_file}.bak"
   echo "Backed up theme file to ${theme_file}.bak"
@@ -79,8 +76,7 @@ fi
 
 echo "Patching prompt_context in agnoster theme..."
 
-# Define the new function using a Heredoc with single quotes 'EOF'
-# This prevents the shell from trying to interpret $USERNAME or %F prematurely
+# capture the new function logic
 new_prompt_context=$(cat <<'EOF'
 prompt_context() {
   if [[ "$USERNAME" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
@@ -90,16 +86,26 @@ prompt_context() {
 EOF
 )
 
-# Use awk to surgically replace the function in the file
-# This logic works on both macOS and Linux
-awk -v new_func="$new_prompt_context" '
-BEGIN { found = 0 }
+# Export the variable so awk can read it from the Environment
+# This fixes the "newline in string" error on macOS
+export AGNOSTER_PATCH="$new_prompt_context"
+
+awk '
+BEGIN { 
+    found = 0 
+    # Read variable from environment instead of -v flag
+    new_func = ENVIRON["AGNOSTER_PATCH"]
+}
 /prompt_context\(\)/ { found = 1; print new_func; next }
 found && /^\}/ { found = 0; next }
 !found { print }
 ' "$theme_file" > "${theme_file}.tmp" && mv "${theme_file}.tmp" "$theme_file" || { echo "Failed to update theme file"; exit 1; }
 
+# 8. Final Cleanup
+if [ -d "fonts" ]; then
+  rm -rf fonts
+fi
+
 echo "--------------------------------------------------"
 echo "✅ Setup completed successfully!"
 echo "💡 Run 'source ~/.zshrc' to apply changes."
-echo "Note: Ensure your terminal font is set to a Powerline font to see the 🧸 icon."
