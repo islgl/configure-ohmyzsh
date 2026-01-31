@@ -45,17 +45,17 @@ else
   echo -e "\n$NEW_PLUGINS" >> "$zshrc_file"
 fi
 
-# 5. Install Meslo LG M Nerd Font
-echo "Installing Meslo LG M Nerd Font..."
+# 5. Install Meslo LG M Nerd Font (CORRECT URLs)
+echo "Installing Meslo LG M Nerd Font (required for NvChad icons)..."
 mkdir -p "$HOME/.fonts_temp"
 cd "$HOME/.fonts_temp" || exit 1
 
-# Download 4 styles of Meslo LG M Nerd Font (Regular/Bold/Italic/BoldItalic)
+# Correct URLs (direct links to Meslo LG M Nerd Font files)
 font_urls=(
-  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGMNerdFont-Regular.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Bold/MesloLGMNerdFont-Bold.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Italic/MesloLGMNerdFont-Italic.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Bold-Italic/MesloLGMNerdFont-BoldItalic.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Regular.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Bold.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Italic.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-BoldItalic.ttf"
 )
 
 for url in "${font_urls[@]}"; do
