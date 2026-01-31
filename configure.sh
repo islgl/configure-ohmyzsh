@@ -45,17 +45,17 @@ else
   echo -e "\n$NEW_PLUGINS" >> "$zshrc_file"
 fi
 
-# 5. Install Meslo LG M Nerd Font (CORRECT URLs)
-echo "Installing Meslo LG M Nerd Font (required for NvChad icons)..."
+# 5. Install Meslo LG S Nerd Font
+echo "Installing Meslo LG S Nerd Font..."
 mkdir -p "$HOME/.fonts_temp"
 cd "$HOME/.fonts_temp" || exit 1
 
-# Correct URLs (direct links to Meslo LG M Nerd Font files)
+# Correct download URLs
 font_urls=(
-  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Regular.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Bold.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-Italic.ttf"
-  "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/MesloLGMNerdFont-BoldItalic.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/S/Regular/MesloLGSNerdFont-Regular.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/S/Bold/MesloLGSNerdFont-Bold.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/S/Italic/MesloLGSNerdFont-Italic.ttf"
+  "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/S/Bold-Italic/MesloLGSNerdFont-BoldItalic.ttf"
 )
 
 for url in "${font_urls[@]}"; do
@@ -77,7 +77,7 @@ done
 fc-cache -fv 2>/dev/null || true
 cd - || exit 1
 rm -rf "$HOME/.fonts_temp"  # Clean up temporary directory
-echo "Meslo LG M Nerd Font installed successfully."
+echo "Meslo LG S Nerd Font installed successfully."
 
 # 6. Update ZSH_THEME to Agnoster
 if grep -q "^ZSH_THEME=" "$zshrc_file"; then
@@ -129,5 +129,5 @@ echo "--------------------------------------------------"
 echo "✅ Setup completed successfully!"
 echo "💡 Next steps:"
 echo "  1. Open Mac Terminal > Preferences > Profiles > Text"
-echo "  2. Change the font to 'Meslo LG M Nerd Font'"
+echo "  2. Change the font to 'Meslo LG S Nerd Font'"
 echo "  3. Run 'source ~/.zshrc' to apply all changes."
