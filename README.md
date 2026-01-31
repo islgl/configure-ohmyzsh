@@ -12,7 +12,6 @@
 
 ```bash
 git clone https://github.com/islgl/configure-ohmyzsh.git
-cd configure-ohmyzsh
 
 chmod +x configure-ohmyzsh/configure.sh
 
