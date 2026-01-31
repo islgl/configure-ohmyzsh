@@ -34,20 +34,14 @@ else
 fi
 
 # 4. Update Plugins List
-# Using a temp variable to hold the new block to avoid quoting hell
-NEW_PLUGINS=$(cat <<EOF
-plugins=(
-	git
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-)
-EOF
-)
+# We use a single-line string for the replacement to ensure Zsh array syntax is perfect
+NEW_PLUGINS="plugins=(git zsh-autosuggestions zsh-syntax-highlighting)"
 
 if grep -q "plugins=(" "$zshrc_file"; then
   echo "Updating plugins section in .zshrc..."
-  # Perl handles the multi-line replacement reliably on both macOS and Linux
-  perl -i -0777 -pe "s/plugins=\(.*?\)/$NEW_PLUGINS/gs" "$zshrc_file"
+  # This Perl command finds the plugins=(...) block (even multi-line) 
+  # and replaces it with a clean single-line array.
+  perl -i -0777 -pe "s/plugins=\(.*?(\n\s*)*?\)/$NEW_PLUGINS/gs" "$zshrc_file"
 else
   echo "Plugins section not found, appending to file..."
   echo -e "\n$NEW_PLUGINS" >> "$zshrc_file"
